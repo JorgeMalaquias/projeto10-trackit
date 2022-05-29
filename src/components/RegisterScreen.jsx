@@ -3,17 +3,17 @@ import logo from '../assets/img/logo.svg';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import {ThreeDots} from 'react-loader-spinner';
+import { ThreeDots } from 'react-loader-spinner';
 
 
-function returnAPI(e, API, registerInfos,navigate,setFormControl) {
+function returnAPI(e, API, registerInfos, navigate, setFormControl) {
     e.preventDefault();
     setFormControl(true);
     const promise = axios.post(API, registerInfos);
     promise.then((promise) => {
-        setTimeout(()=>navigate("/"),1000);
+        setTimeout(() => navigate("/"), 1000);
     });
-    promise.catch((promise)=>{
+    promise.catch((promise) => {
         alert("Dados inválidos");
         setFormControl(false);
     });
@@ -30,7 +30,7 @@ export default function RegisterScreen() {
         name,
         password
     }
-    const [formControl, setFormControl]=useState(false);
+    const [formControl, setFormControl] = useState(false);
     const navigate = useNavigate();
     return (
         <Core>
@@ -41,7 +41,7 @@ export default function RegisterScreen() {
                 <input disabled={formControl} placeholder='nome' type="text" onChange={(e) => setName(e.target.value)} />
                 <input disabled={formControl} placeholder='foto' type="text" onChange={(e) => setImage(e.target.value)} />
                 <button disabled={formControl} type='submit'>
-                    {formControl?<ThreeDots color="#FFFFFF" height={40} width={40} /> :"Cadastrar"}
+                    {formControl ? <ThreeDots color="#FFFFFF" height={40} width={40} /> : "Cadastrar"}
                 </button>
             </form>
             <Link to="/">Já tem uma conta? Faça login!</Link>
