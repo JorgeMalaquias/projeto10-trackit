@@ -1,16 +1,27 @@
 import styled from 'styled-components';
 import logo from '../assets/img/logo.svg';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate,  } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { useContext } from 'react';
+import LoginContext from '../contexts/LoginContext';
+import {ThreeDots} from 'react-loader-spinner';
 
 
-function returnAPI(e,API, loginInfos){
+function returnAPI(e,API, loginInfos, setToken,setFormControl,navigate){
     e.preventDefault();
+    setFormControl(true);
     const promise = axios.post(API,loginInfos);
-    promise.then(()=>console.log(promise.data));
-    promise.catch(()=>console.log(promise));
+    promise.then((promise)=>{
+        setToken(promise.data.token);
+        navigate("/habitos");
+    });
+    promise.catch((promise)=>{
+        alert("Dados inválidos");
+        setFormControl(false);
+    });
 }
+
 export default function LoginScreen(){
     const API = 'https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login';
     const [email, setEmail]=useState('');
@@ -19,13 +30,19 @@ export default function LoginScreen(){
         email,
         password
     }
+    const {token, setToken}=useContext(LoginContext);
+    const [formControl, setFormControl]=useState(false);
+    const navigate = useNavigate();
     return(
         <Core>
             <img src={logo} alt="logo" />
-            <form onSubmit={(e)=>returnAPI(e,API,loginInfos)}>
-                <input placeholder='email' type="text" onChange={(e)=>setEmail(e.target.value)} />
-                <input placeholder='senha' type="text" onChange={(e)=>setPassword(e.target.value)} />
-                <button type='submit'>Entrar</button>
+            <form onSubmit={(e)=>returnAPI(e,API,loginInfos, setToken,setFormControl,navigate)}>
+                <input disabled={formControl} placeholder='email' type="text" onChange={(e)=>setEmail(e.target.value)} />
+                <input disabled={formControl} placeholder='senha' type="text" onChange={(e)=>setPassword(e.target.value)} />
+                <ButtonTag type='submit' disabled={formControl}>
+                    {formControl?<ThreeDots color="#FFFFFF" height={40} width={40} /> :"Entrar"}
+                </ButtonTag>
+                
             </form>
             <Link to="/cadastro">Não tem uma conta? Cadastre-se!</Link>
         </Core>
@@ -78,4 +95,8 @@ const Core=styled.div`
             border:none;
         }
     }
+`
+
+const ButtonTag = styled.button`
+    opacity:${props=> props.disabled? 0.5:1};
 `
