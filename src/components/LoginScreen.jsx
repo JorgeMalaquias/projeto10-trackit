@@ -14,7 +14,7 @@ function returnAPI(e,API, loginInfos, setToken,setFormControl,navigate){
     const promise = axios.post(API,loginInfos);
     promise.then((promise)=>{
         setToken(promise.data.token);
-        navigate("/habitos");
+        navigate("/hoje");
     });
     promise.catch((promise)=>{
         alert("Dados inválidos");
