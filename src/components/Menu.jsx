@@ -1,7 +1,15 @@
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
-
+import { Link, useNavigate } from 'react-router-dom';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
+import { useContext } from 'react';
+import ProgressContext from "../contexts/ProgressContext";
+function goToToday(navigate){
+    navigate("/hoje");
+}
 export default function Menu() {
+    const {progress} = useContext(ProgressContext);
+    const navigate = useNavigate();
     return (
         <>
             <MenuTag>
@@ -9,7 +17,8 @@ export default function Menu() {
                     <Link to="/habitos">Hábitos</Link>
                     <Link to="/historico">Histórico</Link>
                 </Options>
-                <ProgressCircle>
+                <ProgressCircle onClick={()=>goToToday(navigate)}>
+                    <CircularProgressbar value={progress}  />
                     <Link to="/hoje">Hoje</Link>
                 </ProgressCircle>
 
@@ -42,6 +51,13 @@ const ProgressCircle = styled.div`
     justify-content: center;
     *{
         color: white;
+    }
+    > *:nth-child(1){
+        position: fixed;
+        bottom: 10; 
+        width: 80px;
+        height: 80px;
+        color:white
     }
 `
 const Options = styled.div`

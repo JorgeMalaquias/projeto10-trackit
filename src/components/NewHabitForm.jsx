@@ -28,10 +28,10 @@ function renderAgain(setHabits, config){
     const promise = axios.get("https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits", config);
     promise.then((promise)=>setHabits(promise.data));
 }
-function sendtoApi(e, habitName, newHabitDays, setFormControl, setHabitName, setNewHabitDays, setFormReset, setHabits) {
+function sendtoApi(e, habitName, newHabitDays, setFormControl, setHabitName, setNewHabitDays, setFormReset, setHabits,token) {
     e.preventDefault();
     setFormControl(true);
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYxNSwiaWF0IjoxNjUzODczODY1fQ.1o8fErH1mJgUtvsybsZfoPD4At9sFSt8LcRAYGGZUKE";
+    
     const newhabit = {
         name: habitName,
         days: newHabitDays.sort()
@@ -57,10 +57,11 @@ function sendtoApi(e, habitName, newHabitDays, setFormControl, setHabitName, set
 export default function NewHabit({ days, formControl, setFormControl, setCreatHabit, newHabitDays, setNewHabitDays, creatHabit, formReset, setFormReset }) {
     const [habitName, setHabitName] = useState("");
     const {setHabits}= useContext(HabitsContext);
+    const {token} = useContext(LoginContext);
     if (formReset === false) {
         return (
             <>
-                <FormTag creatHabit={creatHabit} onSubmit={(e) => sendtoApi(e, habitName, newHabitDays, setFormControl, setNewHabitDays, setHabitName, setFormReset, setHabits)}>
+                <FormTag creatHabit={creatHabit} onSubmit={(e) => sendtoApi(e, habitName, newHabitDays, setFormControl, setNewHabitDays, setHabitName, setFormReset, setHabits,token)}>
                     <input value={habitName} disabled={formControl} placeholder='nome do hábito' type="text" onChange={(e) => setHabitName(e.target.value)} />
                     <div>{days.map((dayInfo, index) => <DayBox key={index} formControl={formControl} index={index} dayInfo={dayInfo} newHabitDays={newHabitDays} setNewHabitDays={setNewHabitDays} />)}</div>
                     <div>

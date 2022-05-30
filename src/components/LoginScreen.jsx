@@ -6,14 +6,16 @@ import axios from 'axios';
 import { useContext } from 'react';
 import LoginContext from '../contexts/LoginContext';
 import {ThreeDots} from 'react-loader-spinner';
+import ImgContext from '../contexts/ImgContext';
 
 
-function returnAPI(e,API, loginInfos, setToken,setFormControl,navigate){
+function returnAPI(e,API, loginInfos, setToken,setFormControl,navigate,setImgUser){
     e.preventDefault();
     setFormControl(true);
     const promise = axios.post(API,loginInfos);
     promise.then((promise)=>{
         setToken(promise.data.token);
+        setImgUser(promise.data.image);
         navigate("/hoje");
     });
     promise.catch((promise)=>{
@@ -31,12 +33,13 @@ export default function LoginScreen(){
         password
     }
     const {token, setToken}=useContext(LoginContext);
+    const {setImgUser}=useContext(ImgContext);
     const [formControl, setFormControl]=useState(false);
     const navigate = useNavigate();
     return(
         <Core>
             <img src={logo} alt="logo" />
-            <form onSubmit={(e)=>returnAPI(e,API,loginInfos, setToken,setFormControl,navigate)}>
+            <form onSubmit={(e)=>returnAPI(e,API,loginInfos, setToken,setFormControl,navigate, setImgUser)}>
                 <input disabled={formControl} placeholder='email' type="text" onChange={(e)=>setEmail(e.target.value)} />
                 <input disabled={formControl} placeholder='senha' type="text" onChange={(e)=>setPassword(e.target.value)} />
                 <ButtonTag type='submit' disabled={formControl}>

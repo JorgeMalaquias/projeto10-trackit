@@ -4,17 +4,18 @@ import styled from 'styled-components';
 import { useState, useContext, useEffect } from 'react';
 import LoginContext from '../contexts/LoginContext';
 import HabitsContext from '../contexts/Habits';
+
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import NewHabit from './NewHabitForm';
 import React from 'react';
 
 
-function deleteHabit(id, setHabits) {
+function deleteHabit(id, setHabits,token) {
     const conf = prompt("Você tem certeza que deseja excluir?(S-sim N-não)")
     if (conf === 'S') {
         const API = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${id}`;
-        const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYxNSwiaWF0IjoxNjUzODczODY1fQ.1o8fErH1mJgUtvsybsZfoPD4At9sFSt8LcRAYGGZUKE";
+        
         const config = {
             headers: {
                 "Authorization": `Bearer ${token}`
@@ -35,13 +36,14 @@ function deleteHabit(id, setHabits) {
 function HabitComponent({ habit, index }) {
     const habitsDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
     const { setHabits } = useContext(HabitsContext);
+    const {token} = useContext(LoginContext);
     return (
         <Habit key={index}>
             <div>
                 <div>{habit.name}</div>
                 <div>{habitsDays.map((d, i) => <Day key={i} status={habit.days.includes(i + 1)}>{d}</Day>)}</div>
             </div>
-            <ion-icon onClick={() => deleteHabit(habit.id, setHabits)} name="trash-outline"></ion-icon>
+            <ion-icon onClick={() => deleteHabit(habit.id, setHabits,token)} name="trash-outline"></ion-icon>
         </Habit>
     );
 }
@@ -65,7 +67,7 @@ function Content({ habits }) {
 
 export default function HabitsScreen() {
     const API = "https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits";
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzYxNSwiaWF0IjoxNjUzODczODY1fQ.1o8fErH1mJgUtvsybsZfoPD4At9sFSt8LcRAYGGZUKE";
+    const {token} = useContext(LoginContext);
     const [formReset, setFormReset] = useState(false);
     const [newHabitDays, setNewHabitDays] = useState([]);
     const [habits, setHabits] = useState([]);
