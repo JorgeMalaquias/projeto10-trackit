@@ -9,10 +9,18 @@ import HabitsContext from '../contexts/Habits';
 
 function selecting(e, selected, setSelected, index, setNewHabitDays, newHabitDays) {
     e.preventDefault();
+    let number;
+    if((index===0)){
+        number = 7;
+        console.log(number);
+    }else{
+        number=index;
+        console.log(number);
+    }
     if (selected === false) {
-        setNewHabitDays([...newHabitDays, index + 1]);
+        setNewHabitDays([...newHabitDays, number]);
     } else {
-        setNewHabitDays(newHabitDays.filter((d, i) => !(d === index + 1)));
+        setNewHabitDays(newHabitDays.filter((d, i) => !(d === number)));
     }
     setSelected(!selected);
 

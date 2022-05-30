@@ -127,6 +127,7 @@ const HabitTag=styled.div`
     background-color: #FFFFFF;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 10px;
     ion-icon{
         width: 70px;
         height: 70px;

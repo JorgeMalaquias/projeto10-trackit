@@ -33,6 +33,14 @@ function deleteHabit(id, setHabits,token) {
     }
 
 }
+
+function generateNumber(i){
+    if(i===0){
+        return 7;
+    }else{
+        return i;
+    }
+}
 function HabitComponent({ habit, index }) {
     const habitsDays = ['D', 'S', 'T', 'Q', 'Q', 'S', 'S'];
     const { setHabits } = useContext(HabitsContext);
@@ -41,7 +49,7 @@ function HabitComponent({ habit, index }) {
         <Habit key={index}>
             <div>
                 <div>{habit.name}</div>
-                <div>{habitsDays.map((d, i) => <Day key={i} status={habit.days.includes(i + 1)}>{d}</Day>)}</div>
+                <div>{habitsDays.map((d, i) => <Day key={i} status={habit.days.includes(generateNumber(i))}>{d}</Day>)}</div>
             </div>
             <ion-icon onClick={() => deleteHabit(habit.id, setHabits,token)} name="trash-outline"></ion-icon>
         </Habit>
